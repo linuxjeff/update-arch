@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+#
+# update-arch - Back e atualização do sistema
+#
+# Site:       n/a
+# Autor:      Jefferson Santana
+# Manutenção: Jefferson Santana
+#
+# ------------------------------------------------------------------------ #
+#  Faz uma copia do sitema com o Timeshift e depois atualiza o sistema com
+#  o Arch-update
+#
+#  Exemplos:
+#      $ update-arch
+#      Neste exemplo o script faz o backup e atualiza o sistema.
+# ------------------------------------------------------------------------ #
+# Histórico:
+#
+#   v0.1.0 03/10/2019, jefferson:
+#       - Início do programa
+#   v0.1.1 12/02/2020, jefferson:
+#       - implantado as opções
+#       - indentação do código
+# ------------------------------------------------------------------------ #
+# Testado em:
+#   bash 5.0.11
+# ------------------------------------------------------------------------ #
+# Agradecimentos:
+# ------------------------------------------------------------------------ #
+
+# ------------------------------- VARIÁVEIS ----------------------------------------- #
+  LOGFILE="/var/log/${0##*/}".log
+
+  PEGAR_VERSAO=`egrep "^#   v" $0 | tail -n1 | cut -d " " -f 4`
+
+  VERSAO="$(basename "$0") $PEGAR_VERSAO"
+
+  MENSAGEM_AJUDA="Uso: $(basename "$0") [OPÇÕES]
+   -h --help       Mostra a ajuda
+   -V --version    Mostra a versão
+  "
+
+# ------------------------------------------------------------------------ #
+
+# ------------------------------- TESTES ----------------------------------------- #
+# Habilita log copiando a saída padrão para o arquivo LOGFILE
+  exec 1> >(tee -a "$LOGFILE")
+# faz o mesmo para a saída de ERROS
+  exec 2>&1
+
+# While das opções de linha de comando.
+  while test -n "$1"
+        do
+# Case das opçãoes.
+  case "$1" in
+   	   -h | --help )
+              echo "$MENSAGEM_AJUDA"
+  	          exit 0
+   	          ;;
+
+    -V | --version )
+  	          echo "$VERSAO"
+  	          exit 0
+  	          ;;
+
+                 * )
+              echo Opção inválida: $1
+  		        exit 1
+  	          ;;
+          esac
+         shift
+    done
+
+# ------------------------------------------------------------------------ #
+
+# ------------------------------- FUNÇÕES ----------------------------------------- #
+
+# ------------------------------------------------------------------------ #
+
+# ------------------------------- EXECUÇÃO ----------------------------------------- #
+# Início
+  date
+# Cria um backup do sistema
+  timeshift --create --scripted --tags D
+# Faz a atualização do sitetema
+  arch-update
+# Fim
+  date
+# ------------------------------------------------------------------------ #
