@@ -83,7 +83,7 @@
 # Cria um backup do sistema
   timeshift --create --scripted --tags D
 # Faz a atualização do sitetema
-  arch-update
+  yay
 # Fim
   date
 # ------------------------------------------------------------------------ #
