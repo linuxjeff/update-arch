@@ -80,10 +80,9 @@
 # ------------------------------- EXECUÇÃO ----------------------------------------- #
 # Início
   date
-# Cria um backup do sistema
-  timeshift --create --scripted --tags D
-# Faz a atualização do sitetema
-  yay
+# Cria um snapshot do sistema
+# E atualizando o Arch Linux
+  sudo timeshift --create --scripted --tags D && yay
 # Fim
   date
 # ------------------------------------------------------------------------ #
